@@ -25,7 +25,7 @@ const main = async () => {
 
   const rootPath = core.getInput("root_path") || ""; // Micro and minimatch do not support paths starting with ./
   const maxDepth = core.getInput("max_depth") || 9
-  const customFileColors = JSON.parse(core.getInput("file_colors") ||  '{}');
+  const customFileColors = JSON.parse(core.getInput("file_colors") || '{}');
   const colorEncoding = core.getInput("color_encoding") || "type"
   const commitMessage = core.getInput("commit_message") || "Repo visualizer: update diagram"
   const excludedPathsString = core.getInput("excluded_paths") || "node_modules,bower_components,dist,out,build,eject,.next,.netlify,.yarn,.git,.vscode,package-lock.json,yarn.lock"
@@ -44,7 +44,7 @@ const main = async () => {
     await exec('git', ['fetch'])
 
     try {
-      await exec('git', ['switch', '-c' , branch,'--track', `origin/${branch}`])
+      await exec('git', ['switch', '-c', branch, '--track', `origin/${branch}`])
     } catch {
       doesBranchExist = false
       core.info(`Branch ${branch} does not yet exist, creating ${branch}.`)
@@ -52,7 +52,7 @@ const main = async () => {
     }
   }
   const componentCodeString = ReactDOMServer.renderToStaticMarkup(
-    <Tree data={data} maxDepth={+maxDepth} colorEncoding={colorEncoding} customFileColors={customFileColors}/>
+    <Tree data={data} maxDepth={+maxDepth} colorEncoding={colorEncoding} customFileColors={customFileColors} />
   );
 
   const outputFile = core.getInput("output_file") || "./diagram.svg"
