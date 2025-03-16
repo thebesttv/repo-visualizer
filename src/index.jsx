@@ -1,6 +1,6 @@
 import { exec } from '@actions/exec'
 import * as core from '@actions/core'
-import * as artifact from '@actions/artifact'
+const { DefaultArtifactClient } = require('@actions/artifact')
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import fs from "fs"
@@ -90,9 +90,11 @@ const main = async () => {
   const shouldUpload = core.getInput('artifact_name') !== ''
   if (shouldUpload) {
     core.startGroup('Upload diagram to artifacts')
-    const client = artifact.create()
-    const result = await client.uploadArtifact(core.getInput('artifact_name'), [outputFile], '.')
-    if (result.failedItems.length > 0) {
+    const artifact = new DefaultArtifactClient()
+    const { id, size } = await artifact.uploadArtifact(
+      core.getInput('artifact_name'), [outputFile], '.'
+    )
+    if (!id) {
       throw 'Artifact was not uploaded successfully.'
     }
     core.endGroup()
