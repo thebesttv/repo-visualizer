@@ -27,3 +27,19 @@ jobs:
       - name: Run unit tests
         run: |
           yarn run test
+
+  self-test:
+    name: Self Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Generate Diagram
+        uses: thebesttv/repo-visualizer@node20
+        with:
+          output_file: "diagram.svg"
+          excluded_paths: ".github,.gitignore"
+          should_push: false           # do not push, instead,
+          artifact_name: 'diagram-svg' # generate an artifact
